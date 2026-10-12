@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://busp27xqyvt67"]
+
+[ext_resource type="Script" uid="uid://djx46tcohp6nl" path="res://game_scenes/DEMOBUTTON.gd" id="1_yq6p1"]
+
+[node name="Credits" type="Control" unique_id=1533455198]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=1724537919]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 29.0
+offset_right = 644.0
+offset_bottom = 530.0
+theme_override_font_sizes/font_size = 50
+text = "This game was made by:
+EelinDenial (Any/All)
+Thayne (They/Them)
+Sktic (She/Her):   sktic.itch.io
+Fengkuang10 (He/Him):  fengkuang10.itch.io/ 
+
+And supported by GMSoc"
+
+[node name="Button" type="Button" parent="." unique_id=104020888]
+layout_mode = 0
+offset_left = 1127.0
+offset_top = 606.0
+offset_right = 1227.0
+offset_bottom = 669.0
+theme_override_font_sizes/font_size = 40
+text = "Back"
+script = ExtResource("1_yq6p1")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

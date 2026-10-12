@@ -35,10 +35,13 @@ func load_scene(_scene_path: String, instant: bool = false) -> void:
 	
 	_start_load()
 
-func _input(event: InputEvent) -> void:
-	if (event.is_action_pressed("reset")):
-		print("reset")
-		load_scene(scene_path);
+#func _input(event: InputEvent) -> void:
+	#if (event.is_action_pressed("reset")):
+		#print("reset")
+		#load_scene(scene_path);
+	#elif (event.is_action_pressed("demo_reset")):
+		#
+		#load_scene("res://game_scenes/title_screen.tscn")
 	
 func _start_load() -> void:
 	var state = ResourceLoader.load_threaded_request(scene_path, "", use_sub_threads)
