@@ -22,7 +22,7 @@ func get_potion() -> Potion.Type:
 
 func _type_to_region() -> Rect2:
 	match p_type:
-		Potion.Type.SLOW_DOWN:
+		Potion.Type.RESET:
 			return Rect2(32, 64, 32, 32)
 		Potion.Type.SPEED_UP:
 			return Rect2(0, 96, 32, 32)

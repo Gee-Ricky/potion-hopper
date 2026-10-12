@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cdqp35dc0jjq4"]
+
+[ext_resource type="Script" uid="uid://djx46tcohp6nl" path="res://game_scenes/DEMOBUTTON.gd" id="1_cmdjs"]
+
+[node name="DemoEnd" type="Node2D" unique_id=661111179]
+
+[node name="Control" type="Control" parent="." unique_id=621493080]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control" unique_id=561681942]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 38.0
+offset_right = 1999.0
+offset_bottom = 379.0
+theme_override_font_sizes/font_size = 40
+text = "THANK YOU SO MUCH 
+FOR  TRYING OUR DEMO. 
+FIND OUR PROJECT AT
+unswgmsoc.itch.io/potion-hopper 
+(or scan the QR code at the table)"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2019203844]
+anchor_mode = 0
+
+[node name="Button" type="Button" parent="." unique_id=1272648184]
+offset_left = 127.0
+offset_top = 409.0
+offset_right = 551.0
+offset_bottom = 472.0
+theme_override_font_sizes/font_size = 40
+text = "BACK TO MAIN MENU"
+script = ExtResource("1_cmdjs")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

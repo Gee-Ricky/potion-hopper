@@ -18,11 +18,9 @@ var step_len := 1
 # Timer that clears buffered inputs after 0.1 seconds of inactivity
 @onready var buffer_timer: Timer = $BufferClear;
 var buffered_input: Array[Vector2i] = [];
-@onready var inventory_display: InventoryDisplay = $InventoryDisplay/Inventory
 
 func _ready() -> void:
 	movement.cell_pos = Global.game_objects.local_to_map(position)
-	inventory_display.setup(inventory)
 
 func _input(event: InputEvent) -> void:
 	_receive_direction(event)
@@ -37,6 +35,8 @@ func _physics_process(delta: float) -> void:
 			var input: Vector2i = buffered_input[0];
 			
 			var player_cell_pos = movement.move(input) # move function here
+			player_move.emit()
+			
 			var player_pos := Global.game_entities.map_to_local(player_cell_pos);
 			var screen_rect := get_viewport_rect()
 			if not screen_rect.has_point(get_canvas_transform() * player_pos):

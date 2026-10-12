@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bfnn1ansuqnmu" path="res://game_assets/grid_movement_c.tscn" id="3_pk11u"]
 
 [node name="Crate" type="Node2D" unique_id=459245225 groups=["projectile"]]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_yclac")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1111446147]

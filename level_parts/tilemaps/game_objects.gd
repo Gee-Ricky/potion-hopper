@@ -1,6 +1,6 @@
 extends TileMapLayer
 class_name GameObjects
-enum Type {IS_WALL, IS_OBSTACLE, IS_POTION, IS_EFFECT, IS_MOVEABLE, IS_BUTTON, IS_CHECKPOINT}
+enum Type {IS_WALL, IS_OBSTACLE, IS_POTION, IS_EFFECT, IS_MOVEABLE, IS_BUTTON, IS_CHECKPOINT, IS_LEVEL_END}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,7 +18,11 @@ func break_potion(cell: Vector2i, p: Potion.Type):
 
 func collect_potion(cell: Vector2i):
 	erase_cell(cell)
+
+func activate_checkpoint(cell: Vector2i):
+	set_cell(cell, 0, Vector2i(1, 4))
 	
+
 func find_tile(atlas: TileSetAtlasSource, is_object: int, potion_type: int) -> Vector2i:
 	for i in atlas.get_tiles_count():
 		var coords := atlas.get_tile_id(i)
@@ -34,10 +38,17 @@ func update_button_group(button_group: int, active: bool) -> void:
 		
 		if (tile.get_custom_data("button_group") == button_group &&
 			tile.get_custom_data("is_object") != Type.IS_BUTTON):
-			var sprite_offset_x: int = (tile.get_custom_data("button_group") - 1) % 2 * 2;
-			var sprite_offset_y: int = floor((tile.get_custom_data("button_group") - 1) / 2) * 2;
+			var sprite_offset_x: int = (tile.get_custom_data("button_group")) % 2 * 2;
+			var sprite_offset_y: int = floor((tile.get_custom_data("button_group")) / 2) * 2;
 			
-			if (active):
+			if tile.get_custom_data("is_object") == Type.IS_WALL:
 				set_cell(coords, 1, Vector2i(1 + sprite_offset_x, 1 + sprite_offset_y));
 			else:
 				set_cell(coords, 1, Vector2i(0 + sprite_offset_x, 1 + sprite_offset_y));
+			#if (active):
+				#set_cell(coords, 1, Vector2i(1 + sprite_offset_x, 1 + sprite_offset_y));
+				#print(Vector2i(1 + sprite_offset_x, 1 + sprite_offset_y))
+				#print("sdkfhb")
+			#else:
+				#set_cell(coords, 1, Vector2i(0 + sprite_offset_x, 1 + sprite_offset_y));
+				#print(Vector2i(0 + sprite_offset_x, 1 + sprite_offset_y))

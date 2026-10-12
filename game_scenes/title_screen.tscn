@@ -70,7 +70,8 @@ text = "Play"
 [node name="Settings" type="Button" parent="Control/VBoxContainer" unique_id=1638727064]
 layout_mode = 2
 theme = SubResource("Theme_mti6b")
-text = "Settings"
+disabled = true
+text = "~~Settings~~"
 
 [node name="Credits" type="Button" parent="Control/VBoxContainer" unique_id=1265598173]
 layout_mode = 2
@@ -83,3 +84,5 @@ theme = SubResource("Theme_mti6b")
 text = "Exit"
 
 [connection signal="pressed" from="Control/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

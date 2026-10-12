@@ -7,20 +7,20 @@ extends Node2D
 
 @export var slots: Array[inventory_slot]
 
-func _ready() -> void:
-	check_position()
+#func _ready() -> void:
+	#check_position()
 
-func check_position() -> void:
-	var size := get_viewport().get_visible_rect()
-	print(size)
-	# I don't know
-	# this should be I, bt I don't like UI so I'm implementing it liks this so I can do it faster.
-	global_position = Vector2(HEIGHT/2, size.size.y - HEIGHT/2)/CAMERA_SCALE + Vector2(8, -8)
+#func check_position() -> void:
+	#var size := get_viewport().get_visible_rect()
+	#print(size)
+	## I don't know
+	## this should be I, bt I don't like UI so I'm implementing it liks this so I can do it faster.
+	#global_position = Vector2(HEIGHT/2, size.size.y - HEIGHT/2)/CAMERA_SCALE + Vector2(8, -8)
 
 
 func setup(inventory: Inventory) -> void:
-	inventory.potion_added.connect(on_potion_added)
-	inventory.potion_removed.connect(on_potion_removed)
+	Global.potion_added.connect(on_potion_added)
+	Global.potion_removed.connect(on_potion_removed)
 
 func on_potion_added(type: Potion.Type) -> void:
 	for slot in slots:

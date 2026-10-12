@@ -22,7 +22,7 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 custom_data_layer_0/name = "is_entity"
 custom_data_layer_0/type = 2
-sources/3 = SubResource("TileSetAtlasSource_fhvnb")
+sources/0 = SubResource("TileSetAtlasSource_fhvnb")
 
 [node name="GameEntities" type="TileMapLayer" unique_id=2116111053]
 tile_set = SubResource("TileSet_eviq0")

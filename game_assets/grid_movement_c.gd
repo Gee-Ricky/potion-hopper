@@ -16,6 +16,7 @@ var temp_push_strength := 0
 @export var tween_time := 0.07
 @export var scale_tween := true
 var init_pos: Vector2i
+var is_on_button := false
 
 signal step_len_changed()
 
@@ -28,6 +29,10 @@ const DIRECTIONS: Dictionary = {
 	"left": Vector2i(-1, 0),
 	"right": Vector2i(1, 0)
 }
+
+func _ready() -> void:
+	var cell_pos = Global.game_objects.local_to_map(object.position)
+	print(cell_pos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -81,8 +86,9 @@ func _check_path(path_pos: Vector2i, dest: Vector2i, dir: Vector2i):
 func _path_logic(path_pos: Vector2i, dir: Vector2i, is_grounded: bool, pre_dist: int) -> bool:
 	if path_pos in Global.game_entities.entity_dict:
 		var entity = Global.game_entities.entity_dict[path_pos]
-		#var total_push = push_strength + 
 		temp_push_strength -= pre_dist
+		if entity is ShortCrate and not is_grounded:
+			return true
 		var pushed_pos: Vector2i = entity.get_node("GridMovement_C").move(dir, temp_push_strength, pre_dist)
 		if pushed_pos == path_pos:
 			return false
@@ -110,28 +116,40 @@ func _path_logic(path_pos: Vector2i, dir: Vector2i, is_grounded: bool, pre_dist:
 				if is_grounded:
 					return false
 			GameObjects.Type.IS_BUTTON:
-				var button_group: int = tile_data.get_custom_data("button_group");
-				Global.game_objects.update_button_group(button_group, true);
+				if is_grounded:
+					print("getting on")
+					is_on_button = true
+					var button_group: int = tile_data.get_custom_data("button_group");
+					Global.game_objects.update_button_group(button_group, true);
+					return true;
 			GameObjects.Type.IS_CHECKPOINT:
-				Global.last_player_cp = path_pos
+				if object is Player:
+					Global.last_player_cp = path_pos
+					Global.game_objects.activate_checkpoint(path_pos)
+			GameObjects.Type.IS_LEVEL_END:
+				if object is Player:
+					Global.last_player_cp = Vector2.ZERO
+					Global.next_level.emit()
 			_:
 				pass
 	
 	# handle when buttons stop being pressed.
 	var prev_pos: Vector2i = path_pos - dir;
-	var prev_tile_data := Global.game_objects.get_cell_tile_data(prev_pos);
-	if (prev_tile_data):
-		var prev_tile_type: GameObjects.Type = prev_tile_data.get_custom_data("is_object");
-		
-		if (prev_tile_type == GameObjects.Type.IS_BUTTON):
-			var button_group: int = prev_tile_data.get_custom_data("button_group");
-			Global.game_objects.update_button_group(button_group, false);
+	if object is not Player or prev_pos == cell_pos and is_on_button:
+		is_on_button = false
+		var prev_tile_data := Global.game_objects.get_cell_tile_data(prev_pos);
+		if (prev_tile_data):
+			var prev_tile_type: GameObjects.Type = prev_tile_data.get_custom_data("is_object");
+			
+			if (prev_tile_type == GameObjects.Type.IS_BUTTON):
+				var button_group: int = prev_tile_data.get_custom_data("button_group");
+				Global.game_objects.update_button_group(button_group, false);
 	
 	return true
 
 func _move_to(curr_cell: Vector2i, dest_cell: Vector2i, pre_dist := 0) -> Vector2i:
 	var distance = (dest_cell - curr_cell).length();
-	print(curr_cell, " ", dest_cell, " ",  object.name)
+	#print(curr_cell, " ", dest_cell, " ",  object.name)
 	var mod_tween_time = tween_time
 	if (scale_tween):
 		mod_tween_time *= distance;
@@ -152,7 +170,20 @@ func _move_to(curr_cell: Vector2i, dest_cell: Vector2i, pre_dist := 0) -> Vector
 		object.position = local_pos
 	Global.game_entities.move_cell(curr_cell, dest_cell)
 	return dest_cell
+
+# specific function for markers for player, this is so cursed
+func can_move(dest: Vector2i)-> bool:
+	var distance: int = (dest - cell_pos).length()
+	var dir = (dest - cell_pos).clampi(-1, 1)
+	for i in range(1, distance + 1):
+		var tile_data = Global.game_objects.get_cell_tile_data(cell_pos + i * dir)
+		if tile_data:
+			if tile_data.get_custom_data("is_object") == GameObjects.Type.IS_WALL:
+				return false
+	return true
+			
 	
+
 
 func teleport(coords: Vector2i):
 	

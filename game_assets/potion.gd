@@ -1,15 +1,19 @@
 extends Node
 class_name Potion
 
-enum Type {SPEED_UP, SLOW_DOWN, STRENGTH}
+enum Type { RESET, PURPLE, SPEED_UP, STRENGTH}
 
 static var data = {
+	Type.RESET: {
+		"effect": _reset
+	},
+	
 	Type.SPEED_UP: {
 		"effect": _speed_up
 	},
 	
-	Type.SLOW_DOWN: {
-		"effect": _slow_down
+	Type.PURPLE: {
+		"effect": _reset
 	},
 	
 	Type.STRENGTH: {
@@ -30,10 +34,11 @@ static func _speed_up(target: Node2D):
 	if movement:
 		movement.set_step_length(2)
 		
-static func _slow_down(target: Node2D):
+static func _reset(target: Node2D):
 	var movement = target.get_node_or_null("GridMovement_C")
 	if movement:
 		movement.set_step_length(1)
+		movement.push_strength = 1
 
 static func _strength(target: Node2D):
 	var movement = target.get_node_or_null("GridMovement_C")
